@@ -55,9 +55,13 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-# Crashlytics generated file
+# Version/User Specific Files
 crashlytics-build.properties
 .vsconfig
 UserSettings
-Packages/packages-lock.json
 Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
+GameDev_Team1.sln
+ProjectSettings/ProjectVersion.txt
+Packages/manifest.json
+Packages/manifest.json
+Packages/packages-lock.json
