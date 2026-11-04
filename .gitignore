@@ -58,10 +58,10 @@ sysinfo.txt
 # Version/User Specific Files
 crashlytics-build.properties
 .vsconfig
-UserSettings
-Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
-GameDev_Team1.sln
-ProjectSettings/ProjectVersion.txt
-Packages/manifest.json
-Packages/manifest.json
-Packages/packages-lock.json
+#UserSettings
+#Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
+#GameDev_Team1.sln
+#ProjectSettings/ProjectVersion.txt
+#Packages/manifest.json
+#Packages/manifest.json
+#Packages/packages-lock.json
