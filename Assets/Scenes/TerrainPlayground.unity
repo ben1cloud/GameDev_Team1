@@ -389,10 +389,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b07ba3eb339c741e7b57f7b50670e66d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapGenerator
+  drawMode: 1
+  noiseScale: 15.9
   mapWidth: 100
   mapHeight: 100
-  noiseScale: 0.3
+  octaves: 4
+  persistence: 0.446
+  lacunarity: 1.51
+  seed: 11
+  offset: {x: 0, y: 0}
   autoUpdate: 1
+  regions:
+  - label: Water Deep
+    maxHeight: 0.2
+    colour: {r: 0, g: 0.26138678, b: 0.4716981, a: 1}
+  - label: Water Shallow
+    maxHeight: 0.4
+    colour: {r: 0.033775367, g: 0.37707508, b: 0.6509434, a: 1}
+  - label: Sand
+    maxHeight: 0.5
+    colour: {r: 0.9056604, g: 0.7726518, b: 0.38020647, a: 1}
+  - label: Grass
+    maxHeight: 0.6
+    colour: {r: 0.0734247, g: 0.6226415, b: 0.1655751, a: 1}
+  - label: Tall Grass
+    maxHeight: 0.65
+    colour: {r: 0.049127813, g: 0.4528302, b: 0.12036936, a: 1}
+  - label: Mountain Low Rock
+    maxHeight: 0.75
+    colour: {r: 0.2830189, g: 0.2309541, b: 0.24071623, a: 1}
+  - label: Mountain High Rock
+    maxHeight: 0.85
+    colour: {r: 0.21698111, g: 0.19548771, b: 0.19978638, a: 1}
+  - label: Mountain Ice Cap
+    maxHeight: 1
+    colour: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &874773661
 Transform:
   m_ObjectHideFlags: 0
