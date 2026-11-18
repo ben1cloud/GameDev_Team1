@@ -55,6 +55,8 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = _cursorMode;
         //_camera = Camera.main.gameObject;
         _input = GetComponent<PlayerInput>();
+        StaticObjects.Player = this.transform;
+
     }
 
     public void OnMove(InputValue value)
