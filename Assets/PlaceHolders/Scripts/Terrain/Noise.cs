@@ -1,3 +1,5 @@
+using System;
+using System.Security.Cryptography;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -7,6 +9,7 @@ public class Noise
      float scale, int octaves, float persistence, float lacunarity, Vector2 offset)
     {
         float[,] noiseMap = new float[mapWidth, mapHeight];
+        if (seed == 0) seed = UnityEngine.Random.Range(0, int.MaxValue - 1);
         System.Random prng = new System.Random(seed);
         Vector2[] octaveOffsets = new Vector2[octaves];
 

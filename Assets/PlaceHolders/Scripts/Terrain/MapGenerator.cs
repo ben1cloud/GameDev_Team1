@@ -8,6 +8,8 @@ public class MapGenerator : MonoBehaviour
     [Header("Map Settings")]
     [SerializeField] private float noiseScale;
     [SerializeField] private int mapWidth, mapHeight;
+    [SerializeField] private float mapHeightMultiplier;
+    [SerializeField] private AnimationCurve meshHeightCurve;
 
 
     [Header("Noise Settings")]
@@ -50,7 +52,7 @@ public class MapGenerator : MonoBehaviour
         else if (drawMode == DrawMode.ColourMap)  
             display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
         else if (drawMode == DrawMode.Mesh) 
-            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap), TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, mapHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
     }
 
     void OnValidate()
