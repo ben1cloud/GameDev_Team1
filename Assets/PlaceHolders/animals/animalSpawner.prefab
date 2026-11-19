@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3317153529066003538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5203139086654060716}
+  - component: {fileID: 8771485543691717577}
+  m_Layer: 0
+  m_Name: animalSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5203139086654060716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3317153529066003538}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.08534, y: 0.43, z: 3.24}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8771485543691717577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3317153529066003538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c8fff811abec3eef87a126b8114ad0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ResourceGenerator
+  resourcePrefabs:
+  - {fileID: 4869576468174161487, guid: e920061ebd76b234f86a91c80e3571db, type: 3}
+  - {fileID: 4869576468174161487, guid: 79ead6ab7aba6c977a91a41005d699b5, type: 3}
+  - {fileID: 2391045044651107819, guid: 08552c55ad405d9d4bd7868d59667e3d, type: 3}
+  spawnChance: 0.08
+  centerPosition: {x: 0, y: 0}
+  gridRange: 20
+  maxSpawnedResources: 30
+  distanceBetweenCheck: 1
+  heightOfCheck: 10
+  raycastDistance: 30
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
