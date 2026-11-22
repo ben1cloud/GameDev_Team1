@@ -55,45 +55,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 25189bc75c40f4e95ad17c4db5de3369, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3507404993770163946}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25189bc75c40f4e95ad17c4db5de3369, type: 3}
 --- !u!1 &1467774048566293725 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 25189bc75c40f4e95ad17c4db5de3369, type: 3}
   m_PrefabInstance: {fileID: 1774415408092776844}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3507404993770163946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467774048566293725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d9ada1d4224b4777a80f5ea6c97f8ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tile
-  validUpNeighbours:
-  - {fileID: -7325785309943206371, guid: ae8d5bd57956f4bcd83615a061772353, type: 3}
-  - {fileID: 4352562438540563120, guid: 5dafb0cd7620c493a9bac12e1a8354d1, type: 3}
-  - {fileID: 6424771529545067309, guid: 49740dc3e9a83473b82725e7f66ce497, type: 3}
-  validDownNeighbours:
-  - {fileID: 1841395324766095125, guid: 3fe2fbee6f8904157a14ce645c6b5527, type: 3}
-  - {fileID: -2782156796354267180, guid: 3e06442b0cbeb4ae8b7cd5d0045abbb3, type: 3}
-  - {fileID: -7325785309943206371, guid: ae8d5bd57956f4bcd83615a061772353, type: 3}
-  - {fileID: 4352562438540563120, guid: 5dafb0cd7620c493a9bac12e1a8354d1, type: 3}
-  - {fileID: 8684514358676037218, guid: b4298b11a632246568f8621ae971c2ac, type: 3}
-  validLeftNeighbours:
-  - {fileID: 4352562438540563120, guid: 5dafb0cd7620c493a9bac12e1a8354d1, type: 3}
-  - {fileID: 5973685925223443040, guid: 0dbf978f49b2640b3b1ebce025a464e4, type: 3}
-  - {fileID: 8684514358676037218, guid: b4298b11a632246568f8621ae971c2ac, type: 3}
-  validRightNeighbours:
-  - {fileID: 1841395324766095125, guid: 3fe2fbee6f8904157a14ce645c6b5527, type: 3}
-  - {fileID: -2782156796354267180, guid: 3e06442b0cbeb4ae8b7cd5d0045abbb3, type: 3}
-  - {fileID: 4352562438540563120, guid: 5dafb0cd7620c493a9bac12e1a8354d1, type: 3}
-  - {fileID: 5973685925223443040, guid: 0dbf978f49b2640b3b1ebce025a464e4, type: 3}
-  - {fileID: 6424771529545067309, guid: 49740dc3e9a83473b82725e7f66ce497, type: 3}
