@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1413555319329985569}
-  - component: {fileID: 4960271464127544623}
+  - component: {fileID: 8750826946531571487}
   m_Layer: 0
   m_Name: WaveFunctionGenerator
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4960271464127544623
+--- !u!114 &8750826946531571487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2108177742083823495}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be9f97136ea1a4055a5630082ced56a3, type: 3}
+  m_Script: {fileID: 11500000, guid: e670e1ca0091e4bdab734c879477fb5e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WaveFunctionCollapse
-  dimensions: 32
+  m_EditorClassIdentifier: Assembly-CSharp::WaveFunctionGenerator
+  dimensions: {x: 32, y: 1, z: 32}

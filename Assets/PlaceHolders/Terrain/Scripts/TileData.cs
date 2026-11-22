@@ -21,21 +21,32 @@ public class TileData
     private const float Size = 4f;
 
     public readonly TileType Type;
-    public readonly TileType[] ValidUpNeighbours;
-    public readonly TileType[] ValidDownNeighbours;
+    
     public readonly TileType[] ValidLeftNeighbours;
     public readonly TileType[] ValidRightNeighbours;
+    public readonly TileType[] ValidAboveNeighbours;
+    public readonly TileType[] ValidBelowNeighbours;
+    public readonly TileType[] ValidUpNeighbours;
+    public readonly TileType[] ValidDownNeighbours;
 
     private readonly GameObject _prefab;
 
-    public TileData(TileType type, TileType[] up, TileType[] down, TileType[] left, TileType[] right)
+    public TileData(
+        TileType type,
+        TileType[] left, TileType[] right,
+        TileType[] above, TileType[] below,
+        TileType[] up, TileType[] down)
     {
         Type = type;
-        _prefab = Resources.Load<GameObject>(PrefabFolder + type);
-        ValidUpNeighbours = up;
-        ValidDownNeighbours = down;
+        
         ValidLeftNeighbours = left;
         ValidRightNeighbours = right;
+        ValidAboveNeighbours = above;
+        ValidBelowNeighbours = below;
+        ValidUpNeighbours = up;
+        ValidDownNeighbours = down;
+        
+        _prefab = Resources.Load<GameObject>(PrefabFolder + type);
     }
 
     public void Instantiate(Vector3 pos)
@@ -50,52 +61,68 @@ public static class TileDefinitions
     public static readonly TileData[] All =
     {
         new(GrassA,
-            up:    new[] { GrassB, PathBendTL, PathBendTR, PathHorizontal },
-            down:  new[] { GrassB, PathBendBL, PathBendBR, PathHorizontal },
             left:  new[] { GrassB, PathBendBL, PathBendTL, PathVertical },
-            right: new[] { GrassB, PathBendBR, PathBendTR, PathVertical }),
+            right: new[] { GrassB, PathBendBR, PathBendTR, PathVertical },
+            above: new TileType[] { },
+            below: new TileType[] { },
+            up:    new[] { GrassB, PathBendTL, PathBendTR, PathHorizontal },
+            down:  new[] { GrassB, PathBendBL, PathBendBR, PathHorizontal }),
         
         new(GrassB,
-            up:    new[] { GrassA, PathBendTL, PathBendTR, PathHorizontal },
-            down:  new[] { GrassA, PathBendBL, PathBendBR, PathHorizontal },
             left:  new[] { GrassA, PathBendBL, PathBendTL, PathVertical },
-            right: new[] { GrassA, PathBendBR, PathBendTR, PathVertical }),
+            right: new[] { GrassA, PathBendBR, PathBendTR, PathVertical },
+            above: new TileType[] { },
+            below: new TileType[] { },
+            up:    new[] { GrassA, PathBendTL, PathBendTR, PathHorizontal },
+            down:  new[] { GrassA, PathBendBL, PathBendBR, PathHorizontal }),
         
         new(PathBendBL,
-            up:    new[] { GrassA, GrassB, PathBendTL, PathBendTR, PathHorizontal },
-            down:  new[] { PathBendTL, PathBendTR, PathVertical },
             left:  new[] { PathBendBR, PathBendTR, PathHorizontal },
-            right: new[] { GrassA, GrassB, PathBendBR, PathBendTR, PathVertical }),
+            right: new[] { GrassA, GrassB, PathBendBR, PathBendTR, PathVertical },
+            above: new TileType[] { },
+            below: new TileType[] { },
+            up:    new[] { GrassA, GrassB, PathBendTL, PathBendTR, PathHorizontal },
+            down:  new[] { PathBendTL, PathBendTR, PathVertical }),
         
         new(PathBendBR,
-            up:    new[] { GrassA, GrassB, PathBendTL, PathBendTR, PathHorizontal },
-            down:  new[] { PathBendTL, PathBendTR, PathVertical },
             left:  new[] { GrassA, GrassB, PathBendBL, PathBendTL, PathVertical },
-            right: new[] { PathBendBL, PathBendTL, PathHorizontal }),
+            right: new[] { PathBendBL, PathBendTL, PathHorizontal },
+            above: new TileType[] { },
+            below: new TileType[] { },
+            up:    new[] { GrassA, GrassB, PathBendTL, PathBendTR, PathHorizontal },
+            down:  new[] { PathBendTL, PathBendTR, PathVertical }),
         
         new(PathBendTL,
-            up:    new[] { PathBendBL, PathBendBR, PathVertical },
-            down:  new[] { GrassA, GrassB, PathBendBL, PathBendBR, PathHorizontal },
             left:  new[] { PathBendBR, PathBendTR, PathHorizontal },
-            right: new[] { GrassA, GrassB, PathBendBR, PathBendTR, PathVertical }),
+            right: new[] { GrassA, GrassB, PathBendBR, PathBendTR, PathVertical },
+            above: new TileType[] { },
+            below: new TileType[] { },
+            up:    new[] { PathBendBL, PathBendBR, PathVertical },
+            down:  new[] { GrassA, GrassB, PathBendBL, PathBendBR, PathHorizontal }),
         
         new(PathBendTR,
-            up:    new[] { PathBendBL, PathBendBR, PathVertical },
-            down:  new[] { GrassA, GrassB, PathBendBL, PathBendBR, PathHorizontal },
             left:  new[] { GrassA, GrassB, PathBendBL, PathBendTL, PathVertical },
-            right: new[] { PathBendBL, PathBendTL, PathHorizontal }),
+            right: new[] { PathBendBL, PathBendTL, PathHorizontal },
+            above: new TileType[] { },
+            below: new TileType[] { },
+            up:    new[] { PathBendBL, PathBendBR, PathVertical },
+            down:  new[] { GrassA, GrassB, PathBendBL, PathBendBR, PathHorizontal }),
         
         new(PathHorizontal,
-            up:    new[] { GrassA, GrassB, PathBendTL, PathBendTR },
-            down:  new[] { GrassA, GrassB, PathBendBL, PathBendBR },
             left:  new[] { PathBendBR, PathBendTR },
-            right: new[] { PathBendBL, PathBendTL }),
+            right: new[] { PathBendBL, PathBendTL },
+            above: new TileType[] { },
+            below: new TileType[] { },
+            up:    new[] { GrassA, GrassB, PathBendTL, PathBendTR },
+            down:  new[] { GrassA, GrassB, PathBendBL, PathBendBR }),
         
         new(PathVertical,
-            up:    new[] { PathBendBL, PathBendBR },
-            down:  new[] { PathBendTL, PathBendTR },
             left:  new[] { GrassA, GrassB, PathBendBL, PathBendTL },
-            right: new[] { GrassA, GrassB, PathBendBR, PathBendTR }),
+            right: new[] { GrassA, GrassB, PathBendBR, PathBendTR },
+            above: new TileType[] { },
+            below: new TileType[] { },
+            up:    new[] { PathBendBL, PathBendBR },
+            down:  new[] { PathBendTL, PathBendTR }),
     };
 
     public static readonly TileType[] AllTypes = (TileType[])System.Enum.GetValues(typeof(TileType));

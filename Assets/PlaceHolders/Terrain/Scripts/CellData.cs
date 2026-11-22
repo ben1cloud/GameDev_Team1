@@ -6,9 +6,9 @@ public class CellData
     // the existence of a tile implies that it is collapsed!
     public TileType? CollapsedTile = null;
     public TileType[] TileOptions;
-    public Vector3 Position;
+    public Vector3Int Position;
     
-    public CellData(Vector3 position, TileType[] tileOptions)
+    public CellData(Vector3Int position, TileType[] tileOptions)
     {
         Position = position;
         TileOptions = tileOptions;

@@ -4,40 +4,24 @@
     using System.Linq;
     using UnityEngine;
 
-    public class WaveFunctionCollapse : MonoBehaviour
+    public class WaveFunctionCollapse
     {
-        public int dimensions;
-        public readonly List<CellData> Cells = new();
+        public readonly CellData[,,] Cells;
         
-        public int XYToCellsIndex(int x, int y)
+        private readonly Vector3Int _dimensions;
+        private readonly HashSet<CellData> _candidates = new();
+
+        public WaveFunctionCollapse(Vector3Int dimensions)
         {
-            return x + y * dimensions;
-        }
-        
-        private void Awake()
-        {
+            _dimensions = dimensions;
+            Cells = new CellData[dimensions.x, dimensions.y, dimensions.z];
+            
             InitializeGrid();
-            StartCoroutine(Generate());
         }
-
-        private void InitializeGrid()
+        
+        public IEnumerator Generate()
         {
-            for (var x = 0; x < dimensions; x++)
-            {
-                for (var y = 0; y < dimensions; y++)
-                {
-                    var position = new Vector3(x, 0, y);
-                    var options = TileDefinitions.AllTypes.ToArray(); // use ToArray to copy
-                    
-                    var cell = new CellData(position, options);
-                    Cells.Add(cell);
-                }
-            }
-        }
-
-        private IEnumerator Generate()
-        {
-            for (var i = 0; i < dimensions * dimensions; i++)
+            for (var i = 0; i < Cells.Length; i++)
             {
                 var cell = GetNextCell();
                 CollapseCell(cell);
@@ -47,23 +31,36 @@
             }
         }
 
-        private CellData GetNextCell()
+        private void InitializeGrid()
         {
-            var candidates = new List<CellData>(Cells);
+            for (var x = 0; x < _dimensions.x; x++)
+            for (var y = 0; y < _dimensions.y; y++)
+            for (var z = 0; z < _dimensions.z; z++)
+                InitializeCell(new Vector3Int(x, y, z));
+        }
+        private void InitializeCell(Vector3Int position)
+        {
+            var options = TileDefinitions.AllTypes.ToArray(); // use ToArray to copy
+            var cell = new CellData(position, options);
             
-            // remove cells that are done
-            candidates.RemoveAll(c => c.CollapsedTile is not null);
-            
-            // keep only the cells with the lowest length
-            candidates.Sort((a,b) => a.TileOptions.Length - b.TileOptions.Length);
-            candidates.RemoveAll(c => c.TileOptions.Length != candidates[0].TileOptions.Length);
-            
-            // pick from the candidates
-            var randIndex = UnityEngine.Random.Range(0, candidates.Count);
-            return candidates[randIndex];
+            Cells[position.x, position.y, position.z] = cell;
+            _candidates.Add(cell);
         }
 
-        private static void CollapseCell(CellData cell)
+        private CellData GetNextCell()
+        {
+            var newCandidates = new List<CellData>(_candidates);
+            
+            // keep only the cells with the lowest length
+            newCandidates.Sort((a,b) => a.TileOptions.Length - b.TileOptions.Length);
+            newCandidates.RemoveAll(c => c.TileOptions.Length != newCandidates[0].TileOptions.Length);
+            
+            // pick from the candidates
+            var randIndex = UnityEngine.Random.Range(0, newCandidates.Count);
+            return newCandidates[randIndex];
+        }
+
+        private void CollapseCell(CellData cell)
         {
             var selectedTile = TileDefinitions.Backup;
             if (cell.TileOptions.Length > 0)
@@ -73,45 +70,55 @@
             }
             
             cell.CollapsedTile = selectedTile;
+            _candidates.Remove(cell);
             TileDefinitions.Get(selectedTile).Instantiate(cell.Position);
         }
 
         private void UpdateOptions()
         {
-            for (var y = 0; y < dimensions; y++)
-            {
-                for (var x = 0; x < dimensions; x++)
-                {
-                    var cell = Cells[XYToCellsIndex(x, y)];
-                    UpdateOptionsCell(cell, x, y);
-                }
-            }
+            for (var x = 0; x < _dimensions.x; x++)
+            for (var y = 0; y < _dimensions.y; y++)
+            for (var z = 0; z < _dimensions.z; z++)
+                UpdateOptionsCell(Cells[x,y,z]);
         }
-
-        private void UpdateOptionsCell(CellData cell, int x, int y)
+        private void UpdateOptionsCell(CellData cell)
         {
             if (cell.CollapsedTile is not null) return;
 
+            var x = cell.Position.x;
+            var y = cell.Position.y;
+            var z = cell.Position.z;
+
             var newOptions = new HashSet<TileType>(cell.TileOptions);
-            if (y > 0)
-            {
-                var upIdx = XYToCellsIndex(x, y-1);
-                NarrowOptions(newOptions, Cells[upIdx], tile => tile.ValidDownNeighbours);
-            }
-            if (x < dimensions - 1)
-            {
-                var leftIdx = XYToCellsIndex(x+1, y);
-                NarrowOptions(newOptions, Cells[leftIdx], tile => tile.ValidRightNeighbours);
-            }
-            if (y < dimensions - 1)
-            {
-                var downIdx = XYToCellsIndex(x, y+1);
-                NarrowOptions(newOptions, Cells[downIdx], tile => tile.ValidUpNeighbours);
-            }
             if (x > 0)
             {
-                var rightIdx = XYToCellsIndex(x-1, y);
-                NarrowOptions(newOptions, Cells[rightIdx], tile => tile.ValidLeftNeighbours);
+                var rightCell = Cells[x-1, y, z];
+                NarrowOptions(newOptions, rightCell, tile => tile.ValidLeftNeighbours);
+            }
+            if (x < _dimensions.x - 1)
+            {
+                var leftCell = Cells[x+1, y, z];
+                NarrowOptions(newOptions, leftCell, tile => tile.ValidRightNeighbours);
+            }
+            if (y > 0)
+            {
+                var belowCell = Cells[x, y-1, z];
+                NarrowOptions(newOptions, belowCell, tile => tile.ValidAboveNeighbours);
+            }
+            if (y < _dimensions.y - 1)
+            {
+                var aboveCell = Cells[x, y+1, z];
+                NarrowOptions(newOptions, aboveCell, tile => tile.ValidBelowNeighbours);
+            }
+            if (z > 0)
+            {
+                var upCell = Cells[x, y, z-1];
+                NarrowOptions(newOptions, upCell, tile => tile.ValidDownNeighbours);
+            }
+            if (z < _dimensions.z - 1)
+            {
+                var downCell = Cells[x, y, z+1];
+                NarrowOptions(newOptions, downCell, tile => tile.ValidUpNeighbours);
             }
 
             cell.TileOptions = newOptions.ToArray();
