@@ -38,10 +38,10 @@ public class TileData
         ValidRightNeighbours = right;
     }
 
-    public GameObject Instantiate(Vector3 pos)
+    public void Instantiate(Vector3 pos)
     {
         var position = new Vector3(pos.x * Size, pos.y * Size, pos.z * Size);
-        return Object.Instantiate(_prefab, position, _prefab.transform.rotation);
+        Object.Instantiate(_prefab, position, _prefab.transform.rotation);
     }
 }
 
