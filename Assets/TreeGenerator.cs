@@ -237,6 +237,7 @@ public class ProceduralTree : MonoBehaviour
     void ApplyMesh()
     {
         MeshFilter mf = GetComponent<MeshFilter>();
+        MeshCollider mc = GetComponent<MeshCollider>();
 
         // Clean up the previous generated mesh so we don't leak it.
         if (mf.sharedMesh != null && mf.sharedMesh.name == MeshName)
@@ -253,6 +254,7 @@ public class ProceduralTree : MonoBehaviour
         mesh.SetTriangles(triangles, 0);
         mesh.RecalculateBounds();
         mf.sharedMesh = mesh;
+        mc.sharedMesh = mesh;
     }
 
     float Range(float min, float max)
