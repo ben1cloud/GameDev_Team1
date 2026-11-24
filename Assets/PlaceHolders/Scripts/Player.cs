@@ -4,8 +4,22 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(AttackVisualizer))]
 public class Player : MonoBehaviour
-{   
+{
+    public Animator animator;
+    private float speed = 0.0f;
 
+    //jump
+    public float jumpHeight = 1.5f;
+    public float groundCheckDistance = 0.2f;
+    public LayerMask groundMask = ~0;
+
+    //camera aligning
+    public float turnSpeed = 15f;       // 0 = snap instantly
+
+    //combat
+    public bool jumpRequested = false;
+
+    //melee attacks
     public int BasicAttackDamage = 10;
     public int HeavyAttackDamage = 20;
 
@@ -15,6 +29,7 @@ public class Player : MonoBehaviour
     public float BasicAttackRange = 2f;
     public float HeavyAttackRange = 5f;
     public float moveSpeed = 5f;
+
     private Rigidbody rb;
     private Vector3 movement;
 
@@ -63,6 +78,7 @@ public class Player : MonoBehaviour
         // Prevent the player from tipping over
         rb.constraints = RigidbodyConstraints.FreezeRotation;
 
+        animator = GetComponent<Animator>();
     }
 
     void Update(){
@@ -80,11 +96,17 @@ public class Player : MonoBehaviour
         if (Keyboard.current.sKey.isPressed) vertical -= 1f;
         if (Keyboard.current.aKey.isPressed) horizontal -= 1f;
         if (Keyboard.current.dKey.isPressed) horizontal += 1f;
+        if (Keyboard.current.spaceKey.isPressed) jumpRequested = true;
+
+        speed = movement.magnitude;
 
         // movement in players direction
         // normalize to prevent diagnol being faster
         movement = (transform.forward * vertical + transform.right * horizontal).normalized;
-
+        
+        
+        speed = movement.magnitude;
+        animator.SetFloat("Speed", speed, 0.1f, Time.deltaTime);
     }
 
     public void BasicAttack(){
@@ -92,7 +114,9 @@ public class Player : MonoBehaviour
         Debug.Log("Basic attack button pressed!");
         Vector3 start = playerCamera.position;
         attackVisualizer.ShowAttack(start, playerCamera.forward, BasicAttackRange, BasicAttackWidth, Color.red, false);
-        
+
+        animator.SetBool("isHitting", true);
+
         RaycastHit hit;
 
         // Cast a sphere from the camera in the direction it faces
@@ -211,14 +235,60 @@ public class Player : MonoBehaviour
         laserLine.enabled = false;
     }
 
-
-    
-   void FixedUpdate()
+    bool IsGrounded()
     {
+        return Physics.Raycast(transform.position + Vector3.up * 0.1f, Vector3.down,
+                               groundCheckDistance + 0.1f, groundMask);
+    }
+
+    void UpdateAnimator()
+    {
+        if (IsGrounded())
+        {
+            animator.SetBool("isGrounded", true);
+            animator.SetFloat("Speed", speed);
+        }
+        else
+        {
+            animator.SetBool("isGrounded", false);
+            animator.SetBool("isHitting", false);
+        }
+        if (speed > 0f)
+        {
+            animator.SetBool("isHitting", false);
+        }
+
+    }
+
+    void FixedUpdate()
+    {
+        //jump
+        if (jumpRequested && IsGrounded())
+        {
+            float jumpSpeed = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
+            Vector3 v = rb.linearVelocity; // use rb.velocity on Unity 2022 and earlier
+            v.y = jumpSpeed;
+            rb.linearVelocity = v;
+        }
+        jumpRequested = false;
+        
+        //align player facing direction with camera. Only use the camera's horizontal facing so the player doesn't tilt
+        float targetYaw = playerCamera.eulerAngles.y;
+        Quaternion targetRot = Quaternion.Euler(0f, targetYaw, 0f);
+
+        if (turnSpeed <= 0f)
+        {
+            transform.rotation = targetRot;
+        }
+        else
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, turnSpeed * Time.deltaTime);
+        }
+        
         // move
         Vector3 newPosition = rb.position + movement * moveSpeed * Time.fixedDeltaTime;
-
         rb.MovePosition(newPosition);
+
+        UpdateAnimator();
     }
-    
 }
