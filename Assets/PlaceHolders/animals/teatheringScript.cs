@@ -17,6 +17,7 @@ public class TetherMob : MonoBehaviour
     private const float RayDistance = 500f;
     private const float CooldownDuration = 0.3f;
     private const float UntetherGraceDuration = 0.2f;
+    private const float MinimumVerticalNormalAlignment = 0.6f;
 
     void Awake()
     {
@@ -97,6 +98,8 @@ public class TetherMob : MonoBehaviour
         // Fire raycast of length 500
         if (Physics.Raycast(transform.position, dir, out RaycastHit hit, RayDistance))
         {
+            if (!IsValidTetherHit(hit)) return;
+
             isTethered = true;
             tetherPoint = hit.point;
             tetheredDuration = 0f;
@@ -107,6 +110,12 @@ public class TetherMob : MonoBehaviour
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, tetherPoint);
         }
+    }
+
+    private bool IsValidTetherHit(RaycastHit hit)
+    {
+        float verticalNormalAlignment = Mathf.Abs(Vector3.Dot(hit.normal.normalized, Vector3.up));
+        return verticalNormalAlignment >= MinimumVerticalNormalAlignment;
     }
 
     private void Untether()
