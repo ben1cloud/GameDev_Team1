@@ -27,6 +27,9 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _input;
     private float _justInteractedTimer = 0f;
 
+    //from new playermovement script
+    private Vector3 movement;
+
     [Header("UI Panels")]
     [SerializeField] private GameObject _skillPanel;
 
@@ -63,7 +66,6 @@ public class PlayerController : MonoBehaviour
     {
 
         //if (_onUI) return;
-        Debug.Log("input move");
         _moveInput = value.Get<Vector2>();
     }
 
@@ -81,19 +83,18 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-
         if (_characterMovement == null) return;
         // find correct right/forward directions based on main camera rotation
         // send player input to character movement
         Vector3 moveInput = new Vector3();
 
-            Vector3 up = Vector3.up;
-            Vector3 right = _camera.transform.right;
-            Vector3 forward = Vector3.Cross(right, up);
-            moveInput = forward * _moveInput.y + right * _moveInput.x;
-            _characterMovement.SetLookDirection(moveInput);
-
+        Vector3 up = Vector3.up;
+        Vector3 right = _camera.transform.right;
+        Vector3 forward = Vector3.Cross(right, up);
+        moveInput = forward * _moveInput.y + right * _moveInput.x;
+        _characterMovement.SetLookDirection(moveInput);
         _characterMovement.SetMoveInput(moveInput);
+        
     }
 
 }
