@@ -240,8 +240,10 @@ public class CharacterMovement : MonoBehaviour
 
     public virtual void FixedUpdate()
     {
+        //No stairs yet
         //if(!OnStair) 
-        IsStepping = stepClimb();
+        //IsStepping = stepClimb();
+        
         Vector3 targetVelocity = VelocityCalc();
         float backward = BackwardModifier * -2f + 1f;
         targetVelocity *= backward;
