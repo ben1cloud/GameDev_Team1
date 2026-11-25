@@ -112,8 +112,8 @@ public class Player : MonoBehaviour
     public void BasicAttack(){
 
         Debug.Log("Basic attack button pressed!");
-        Vector3 start = playerCamera.position;
-        attackVisualizer.ShowAttack(start, playerCamera.forward, BasicAttackRange, BasicAttackWidth, Color.red, false);
+        Vector3 start = transform.position;
+        attackVisualizer.ShowAttack(start, transform.forward, BasicAttackRange, BasicAttackWidth, Color.red, false);
 
         animator.SetBool("isHitting", true);
 
@@ -136,8 +136,8 @@ public class Player : MonoBehaviour
     {   
 
         Debug.Log("Heavy attack button pressed!");
-        Vector3 start = playerCamera.position;
-        attackVisualizer.ShowAttack(start, playerCamera.forward, HeavyAttackRange, HeavyAttackWidth, Color.blue, true);
+        Vector3 start = transform.position;
+        attackVisualizer.ShowAttack(start, transform.forward, HeavyAttackRange, HeavyAttackWidth, Color.blue, true);
 
         RaycastHit hit;
 
