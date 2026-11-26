@@ -6,7 +6,7 @@ public class MapGenerator : MonoBehaviour
     public DrawMode drawMode;
 
     [Header("Map Settings")]
-    [SerializeField] private int mapChunkSize = 241;
+    public const int mapChunkSize = 241;
     [Range(0,6)]
     public int levelOfDetail;
     [SerializeField] private float noiseScale;
