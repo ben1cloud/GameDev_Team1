@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -89,6 +90,7 @@ public class ConeFlier : MonoBehaviour
 
     private Rigidbody rb;
     private readonly HitMemory[] memory = new HitMemory[5];
+    private readonly HashSet<Collider> collisionContacts = new HashSet<Collider>();
     private int writeIndex = 0;
 
     private bool shouldPitchDown = false;
@@ -128,6 +130,11 @@ public class ConeFlier : MonoBehaviour
             limpCooldownUntilTime = Time.fixedTime + collisionCooldown;
         }
 
+        collisionContacts.RemoveWhere(collider =>
+            collider == null || !collider.enabled || !collider.gameObject.activeInHierarchy);
+        if (collisionContacts.Count > 0) TryStartLimp();
+        if (isLimping) return;
+
         if (rb.IsSleeping()) rb.WakeUp();
 
         if (Vector3.Dot(transform.forward, Vector3.up) > 0f)
@@ -147,6 +154,23 @@ public class ConeFlier : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision collision)
+    {
+        collisionContacts.Add(collision.collider);
+        TryStartLimp();
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        collisionContacts.Add(collision.collider);
+        TryStartLimp();
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        collisionContacts.Remove(collision.collider);
+    }
+
+    private void TryStartLimp()
     {
         if (isLimping || Time.fixedTime < limpCooldownUntilTime || limpDuration <= 0f) return;
 
